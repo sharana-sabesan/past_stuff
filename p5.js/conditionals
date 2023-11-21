@@ -1,0 +1,69 @@
+var beast;
+var color1;
+var color2;
+var color3;
+var oneThird;
+var movingTowardsMouse;
+
+/*
+ In this program, my creature bounces around the canvas, changing colors to meet the background every time the creature enters any third of the background. 
+*/
+
+/*
+ Also, based on where my mouse is, the small text in the top left corner will read either "chasing" or "fleeing". If the creature is turned away from the mouse and going in an opposite direction, the creature is fleeing, but if the creature is facing the mouse and moving towards it, the creature is chasing!
+*/
+
+function setup () {
+  createCanvas(400, 200);
+  helperVariables(); // assigns global variable values other than beast
+
+  beast = {
+    x: 50,
+    y: height * 2/3,
+    size: 80,
+    speed: 3,
+    speed2: 3,
+    color: color1,
+    message: "Hello world",
+  }
+}
+
+function draw () {
+  helperBackground();
+
+  // #2 Update beast position variables
+  beast.y = beast.y + beast.speed2;
+  if(beast.y >= height || beast.y <= 0){
+    beast.speed2 = -beast.speed2;
+  }
+  beast.x = beast.x + beast.speed;
+  if(beast.x >= width || beast.x <= 0){
+    beast.speed = -beast.speed;
+  }
+  
+  // #3 update the beast color to match the background
+ if(beast.x >= oneThird*2){
+   beast.color = color3;
+ }
+ else if(beast.x >= oneThird){
+   beast.color = color2;
+ }else{
+   beast.color = color1;
+ }
+  // #4 assign true or false to movingTowardsMouse
+  if(beast.speed > 0 && mouseX > beast.x || beast.speed < 0 && mouseX < beast.x){
+    movingTowardsMouse = true;
+  }else{
+    movingTowardsMouse = false;
+  }
+  // #5 Update beast.message based on movingTowardsMouse
+ if(movingTowardsMouse){
+   beast.message = "Chasing";
+ }else{
+   beast.message = "Fleeing";
+ }
+  // Bonus 1 and 2
+
+  helperDrawBeast();
+  helperText();
+}
