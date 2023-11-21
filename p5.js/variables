@@ -1,0 +1,43 @@
+// Step 3a: declare color variable
+var backgroundColor;
+// Step 4a: declare/assign variable for moving creature
+var moveX = 10;
+
+function setup () {
+  createCanvas(400, 400);
+
+  // Step 3b: assign a color using the color function
+  backgroundColor = color(163, 240, 231);
+}
+
+function draw () {
+  
+  background(backgroundColor); // Step 3c: use the color variable
+
+  line(mouseX, mouseY, mouseX + 50, mouseY + 120);
+  // Step 2: finish the arrow shape following the mouse
+  strokeWeight(2.5);
+  line(mouseX, mouseY, mouseX+70, mouseY+45);
+  line(mouseX-25, mouseY+77, mouseX+70, mouseY+45);
+  line(mouseX-25, mouseY+77, mouseX, mouseY);
+
+
+  // Step 4b: draw a creature that moves
+  fill(color(222, 208, 80));
+  arc(moveX + 50, 200, 80, 80, 0, PI, PIE);
+  fill(color(147, 237, 153));
+  square(moveX + 10, 120, 80);
+  fill(color(151, 147, 237));
+  triangle(moveX + 50,240, moveX + 80, 300, moveX + 10, 300);
+
+  // Step 4c: update the variable value for moving creature
+  moveX = moveX + 1;
+  if(moveX == width-80){
+    moveX = 0-80;
+  }
+  fill(color(171, mouseX, mouseY));
+  ellipse(200, 25, 120, 15);
+  ellipse(200, 65, 120, 15);
+  fill(color(mouseX, mouseX, mouseY));
+  circle(200, 45, 20);
+}
