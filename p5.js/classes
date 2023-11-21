@@ -1,0 +1,171 @@
+var garden;
+
+/*
+COMMENT:
+In this program, we create a garden of
+4 flowers that have custom blooms, sprouts, and seeds. Using the PlainFlower and FancyFlower class, we create 2 plain flowers and 2 fancy flowers with different shapes. When the mouse is on the right side of the screen, the flowers bloom. When the mouse is on the left side of the screen, the flowers stay as seeds!
+*/
+
+function setup () {
+  createCanvas(400, 400);
+
+  var color1 = color(240, 150, 30);
+  var color2 = color(175, 100, 220);
+  var color3 = color(255, 194, 225);
+  var color4 = color(209, 48, 48);
+
+  var flowerOne = new PlainFlower(width/2 - 40, 3 * height/4, color1);
+  var flowerTwo = new PlainFlower(width/2 + 40, 3 * height/4, color2);
+
+  // #3 Create 2 new flowers from FancyFlower class
+  var flowerThree = new FancyFlower(width/2 - 120, 3 * height/4, color3);
+  var flowerFour = new FancyFlower(width/2 + 120, 3 * height/4, color4);
+   
+  //garden = [flowerOne, flowerTwo]; 
+  garden = [flowerOne, flowerTwo, flowerThree, flowerFour]; 
+  
+  print(garden);
+  noStroke();
+}
+
+function draw () {
+  background(color(66, 135, 245));
+
+  growOrChop(garden);
+  drawPlants(garden);
+}
+
+class PlainFlower {
+  constructor(x, y, petalColor) {
+    // properties from arguments
+    this.x = x,
+    this.y = y,
+    this.petalColor = petalColor,
+
+    // default properties
+    this.size = 0;
+    this.bloomSize = 0;
+
+    // random default properties
+    this.growSpeed = random(.5, 1.5);
+    this.maxSize = random(100,200);
+    this.bloomSpeed = random(1, 3);
+    this.maxBloomSize = random(50, 90);
+  }
+
+  drawBloom() {
+    if (this.bloomSize > 0) {
+      // petals
+      fill(this.petalColor);
+      ellipse(this.x, this.y - this.size, this.bloomSize, this.bloomSize);
+      
+      // center
+      fill("yellow");
+      ellipse(this.x, this.y - this.size, min(this.bloomSize/4, 20), min(this.bloomSize/4, 20));
+    }
+  }
+}
+
+// #2 Create a new class called FancyFlower
+class FancyFlower{
+  constructor(x, y, petalColor){
+    this.x = x;
+    this.y = y;
+    this.petalColor = petalColor;
+
+    // default properties
+    this.size = 0;
+    this.bloomSize = 0;
+
+    // random default properties
+    this.growSpeed = random(2, 3);
+    this.maxSize = random(100,200);
+    this.bloomSpeed = random(1, 3);
+    this.maxBloomSize = random(50, 90);
+  }
+
+  // #4 Add the drawBloom function and give your flowers a unique look
+  drawBloom() {
+    if (this.bloomSize > 0) {
+      // petals
+      fill(this.petalColor);
+      arc(this.x, this.y - this.size, this.bloomSize, this.bloomSize,0, PI, PIE);
+      
+      // center
+      fill("white");
+      ellipse(this.x, this.y - this.size, min(this.bloomSize/4, 20), min(this.bloomSize/4, 20));
+    }
+  }
+}
+
+function drawPlants(garden) {
+  for (var flower in garden) {
+    drawPlant(garden[flower]);
+  }
+}
+
+function drawPlant(flower) {
+  if (flower.size == 0) {
+    drawSeed(flower);
+  } else {
+    drawDefaultSprout(flower);
+
+    if (flower.drawBloom) {
+      flower.drawBloom();
+    } else {
+      drawDefaultBloom(flower);
+    }
+  }
+}
+
+function drawSeed(flower){
+  if(flower.x < width/2){
+    fill(color(150, 162, 168));
+    square(flower.x, flower.y, 12);
+  }else{
+    fill(color(209, 245, 91));
+    ellipse(flower.x, flower.y, 12, 12);
+  }
+}
+
+function drawDefaultSprout(flower) {
+  if(flower.x < width/2){
+    fill(color(119, 245, 88));
+    rect(flower.x, flower.y, 5, -flower.size);
+  }else{
+    fill(color(49, 252, 3));
+    ellipse(flower.x, flower.y - flower.size/2 , 5, -flower.size);
+  }
+}
+
+function drawDefaultBloom(flower) {
+  if (flower.bloomSize > 0) {
+    fill(flower.petalColor);
+    ellipse(flower.x, flower.y - flower.size, flower.bloomSize, flower.bloomSize);
+  }
+}
+
+function growOrChop(garden) {
+  for (var flower in garden) {
+    if (mouseX > width/2) {
+      grow(garden[flower]);
+    } else {
+      chop(garden[flower]);
+    }
+  }
+}
+
+function grow(flower) {
+  if (flower.size == flower.maxSize) {
+    var bloom = flower.bloomSize + flower.bloomSpeed;
+    flower.bloomSize = min(bloom, flower.maxBloomSize);
+  } else {
+    var newSize = flower.size + flower.growSpeed;
+    flower.size = min(newSize, flower.maxSize);
+  }
+}
+
+function chop(flower) {
+  flower.size = 0;
+  flower.bloomSize = 0;
+}
