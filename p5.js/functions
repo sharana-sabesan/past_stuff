@@ -1,0 +1,114 @@
+var plant;
+var grassColor;
+var seedColor;
+var sproutColor;
+var bloomColor;
+
+/*
+In this program, a field of plant
+sprout from seedling to flower. Also
+when the plant is a seed, the top left corner of the screen reads: "seed", when the plant is growing, the top left corner reads: "growing", and when the plant is blooming the top left corner reads: "blooming".
+*/
+
+function setup () {
+  createCanvas(400, 400);
+
+  plant = {
+    size: 0,
+    growSpeed: 1,
+    maxSize: 150,
+    bloomSize: 0,
+    bloomSpeed: 3,
+    maxBloomSize: 100,
+  }
+
+  grassColor = color(122, 229, 80);
+  seedColor = color(160, 104, 30);
+  sproutColor = color(20, 102, 32);
+  bloomColor = color(149, 73, 216);
+
+  textSize(20);
+}
+
+function draw () {
+  background(grassColor);
+
+  print(plant.size);
+
+  growOrReset();
+
+  //Bonus 1
+  for(var xPos = 50; xPos < width; xPos += 50){
+    for(var yPos = 50; yPos < height; yPos += 50){
+      drawPlant(xPos, yPos);
+    }
+  }
+  fill(0);
+  text(plantLabel(), 10, 20);
+}
+
+// #2 Create the growOrReset function
+function growOrReset(){
+  if(mouseX >= width/2){
+    plantGrow();
+  }else{
+    plantReset();
+  }
+}
+
+// #3 Create the drawPlant function
+function drawPlant(x, y){
+  if(plant.size == 0){
+    drawSeed(x, y);
+  }else{
+    drawSprout(x, y);
+    drawBloom(x, y);
+  }
+}
+
+// #4 Create the plantLabel function
+function plantLabel(){
+  if(plant.bloomSize > 0){
+    return "blooming";
+  }
+  else if(plant.size > 0){
+    return "growing";
+  }else{
+    return "seed";
+  }
+}
+
+// ! Do not change the helper functions below !
+function plantReset() {
+  plant.size = 0;
+  plant.bloomSize = 0;
+}
+
+function plantGrow() {
+  if (plant.size == plant.maxSize) {
+   plantBloom();
+  } else {
+    var newSize = plant.size + plant.growSpeed;
+    plant.size = min(newSize, plant.maxSize);
+  }
+}
+
+function plantBloom() {
+  var bloom = plant.bloomSize + plant.bloomSpeed;
+  plant.bloomSize = min(bloom, plant.maxBloomSize);
+}
+
+function drawSeed(x, y) {
+  fill(seedColor);
+  ellipse(x, y, 12, 7);
+}
+
+function drawSprout(x, y) {
+  fill(sproutColor);
+  rect(x, y, 5, -plant.size);
+}
+
+function drawBloom(x, y) {
+  fill(bloomColor);
+  ellipse(x, y - plant.size, plant.bloomSize, plant.bloomSize);
+}
