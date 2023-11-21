@@ -1,0 +1,151 @@
+var rSunSpeed = 1000, rMoonSpeed = 650;
+var resetCanvasButton;
+
+// I used code from the p5js examples reference
+
+var sun, moon, earth;
+var factButton;
+var sunPic, earthPic, moonPic;
+var buttonIsGone;
+
+function preload(){
+  sunPic = loadImage('sun.png');
+  earthPic = loadImage('earth.jpeg');
+  moonPic = loadImage('moon.jpg');
+}
+
+function setup() {
+  createCanvas(400, 400, WEBGL);
+  createSpaceObjects();
+  showInstructions();
+  createUserInput();
+}
+
+function draw() {
+  background(0);
+
+  // Skill 2, DYNAMIC VISUALS -->
+  // Lets users move around and play with space objects
+  orbitControl(5, 5, 0);
+  // <-- Skill 2
+ 
+  // Skill 0, CONDITIONAL LOGIC -->
+  // Makes sure that the instructions button is gone, then displays simulation
+  if(buttonIsGone == true){
+    sliderValue = zoomSlider.value();
+    sun.translateObj(0 ,0, sliderValue);
+    sun.rotateObj(rSunSpeed);
+    sun.showShape();
+    earth.translateObj(50, 0, -175);
+    earth.showShape();
+
+    moon.rotateObj(rMoonSpeed);
+    moon.translateObj(50, 0, -5);
+    moon.showShape();
+  }
+  // <-- Skill 0
+}
+
+
+// Skill 8, FUNCTIONAL ORGANIZATION -->
+// Class that defines what it means to be an object in space. The space objects will rotate, translate and evidently display themselves in this simulation.
+class SpaceObject{
+  constructor(size, txture){
+    this.size = size;
+    this.txture = txture;
+  }
+
+  showShape(){
+    noStroke();
+    texture(this.txture);
+    sphere(this.size);
+  }
+
+  rotateObj(rotationSpeed){
+    rotateY(millis() / rotationSpeed);
+    return rotationSpeed;
+  }
+
+  translateObj(x, y, z){
+    translate(x, y, z);
+  }
+}
+
+// <-- Skill 8
+
+// Skill 9, FUNCTIONAL ORGANIZATION -->
+// Function that shows a box button with instructions/intro to the simulation
+function showInstructions(){
+  var i = "Welcome to this space simulation! You can play around with it by dragging your mouse! You can also use the buttons at the bottom for more features. When using the 'Learn A Fact' button, make sure to scroll down! Have fun! Click this window to continue!"
+  instructions = createButton(i);
+  instructions.position(120, 230);
+  instructions.size(180, 180);
+  instructions.mousePressed(() => {
+    instructions.remove();
+    buttonIsGone = true;
+  });
+}
+// <-- Skill 9
+
+function createUserInput(){
+  // Skill 3, DYAMIC VISUALS -->
+  // Reverses the orbit direction if button is clicked!
+  var reverseOrbit = createButton('Reverse Orbit');
+  reverseOrbit.position(7, 530);
+  reverseOrbit.mousePressed(() =>  {
+    rSunSpeed = -rSunSpeed;
+    rMoonSpeed = -rMoonSpeed;
+  });
+  // <-- Skill 3
+
+  // Skill 4, INTERACTIVITY --> 
+  // Zooms the simulation in and out if you drag the slider
+  zoomSlider = createSlider(-3150, 0, 0);
+  zoomSlider.position(120, 530);
+  zoomSlider.style('width', '80px');
+  // <-- Skill 4
+
+  var div = createDiv('Zoom In/Out');
+  div.style('font-size', '14px');
+  div.position(120, 547);
+
+  // Skill 5, INTERACTIVITY --> 
+  // Brings the solar system simulation back to original starting place
+  resetCanvasButton = createButton('Reset Canvas');
+  resetCanvasButton.position(220, 530);
+  resetCanvasButton.mousePressed(() => {
+    removeElements();
+    createSpaceObjects();
+    createUserInput();
+  });
+  // <-- Skill 5
+
+  // Skill 1, INTERACTIVITY -->
+  // If the user clicks this button, facts are displayed.
+  learnMoreButton = createButton('Learn A Fact');
+  learnMoreButton.position(330, 530);
+  learnMoreButton.mousePressed(displayFacts);
+  // <-- Skill 1
+}
+
+function createSpaceObjects(){
+  sun = new SpaceObject(90, sunPic);
+  moon = new SpaceObject(10, moonPic);
+  earth = new SpaceObject(25, earthPic);
+}
+
+// Skill 7, FUNCTIONAL ORGANIZATION -->
+// This function displays random facts about the sun, moon and earth!
+function displayFacts(){
+  // Skill 6, DATA STRUCTURES -->
+  // Array of random facts about sun, moon and earth!
+  var factArray = ["The Sun accounts for 99.86% of the mass in the solar system meaning it's the heaviest thing in the solar system!", "The energy created by the Sun's core is nuclear fusion, where light nuclei fuse together!", "With a radius of 3,959 miles, Earth is the fifth largest planet in our solar system. The solar system has 8 planets.", "Earth is not flat, but it's not perfectly round either. Earth has never been perfectly round!", "The most widely-accepted explanation is that the Moon was created when a rock the size of Mars slammed into Earth.", "The Moon is moving approximately 3.8 cm away from our planet every year. It is getting farther and farther away from us."]
+  // <-- Skill 6
+  
+  factButton = createButton(random(factArray));
+  factButton.position(7, 610);
+  factButton.size(450, 40);
+  factButton.style('font-size', '14px');
+  factButton.style('background-color', 'pink');
+}
+// <-- Skill 7
