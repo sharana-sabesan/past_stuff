@@ -1,0 +1,109 @@
+/*
+  HOW TO ASK QUESTIONS
+  Sometimes you might get stuck or have additional questions about the code.
+
+  Ask them at the top of this file by putting them in comments like this.
+*/
+
+/*
+  COMMMENT:
+  This program uses the avatar class to create an avatar with a name, height, hat color, hair color, and eye color,all chosen when an instance of the class is created. The avatar also speaks catchprhases when the mouse is pressed. In my program, my avatar is a witch!
+*/
+var avatar1;
+var randomNum;
+
+function setup () {
+  createCanvas(400, 400);
+
+  // Step 2: Answer the question
+  print("What is the difference between a class and an instance? Well, I like to think of it like a definition. The class is the defintion of what it means to be something. For example, let's say a class that defines what it means to be a human exists. This class has methods such as: 'Breathe' and 'Laugh'--> things humans do in life! An instance is when that definition or 'class' is used to create something. For example, since our class is the definition of a human being, when we create an instance we create a human using that definition. We can create several instances that are different types of humans that have different qualities, like different names and ages.");
+  
+
+  // Step 4: Create your own Avatar
+  avatar1 = new Avatar("Maya", 250, 'black', 'pink', '#64469c');
+}
+
+function draw () {
+  background(color(100, 150, 255));
+
+  // Step 6b: Update avatar location
+  avatar1.updateLocation(mouseX, mouseY);
+  
+  // Step 5b: Show your avatar
+  avatar1.show();
+
+  // Bonus 1 & 2
+  if(mouseIsPressed == false){
+    randomNum = round(random(0, 4));
+  }
+  avatar1.speak();
+
+}
+
+class Avatar {
+  constructor(name, height, eyeColor, hairColor, hatColor) {
+    // Step 3: add the missing parameters and properties
+    this.x = width/2;
+    this.y = height/2;
+    this.name = name;
+    this.height = height;
+    this.eyeColor = eyeColor;
+    this.hairColor = hairColor;
+    this.hatColor = hatColor;
+  }
+  
+  // Step 5a: Add the show() function
+  show(){
+    //Name
+    textSize(40);
+    textAlign(CENTER);
+    textFont('Verdana');
+    fill(255, 255, 255);
+    text(this.name, this.x + 100, this.y - 130);
+
+    //FACE
+    fill(color('#e0ac69'));
+    circle(this.x, this.y - 60, this.height/3);
+
+    //HAIR
+    fill(color(this.hairColor))
+    arc(this.x, this.y - 60, this.height/3, this.height/3, 60, 0, OPEN);
+    circle(this.x - 35, this.y - 80, (this.height/3)/2);
+    circle(this.x + 35, this.y - 80, (this.height/3)/2);
+
+    //EYES
+    fill(color(this.eyeColor));
+    square(this.x - 20, this.y - 55, 10);
+    square(this.x + 13, this.y - 55, 10);
+
+    //HAT
+    fill(color(this.hatColor));
+    ellipse(this.x, this.y - 90, this.height/3 + 50, 25);
+    triangle(this.x, this.y - 170, this.x - 45, this.y - 100, this.x + 45, this.y - 100);
+
+    //body
+    fill(color('purple'));
+    triangle(this.x, this.y + 10, this.x - 70, this.y + 100, this.x + 70, this.y + 100);
+    square(this.x - 32, this.y - 20, this.height/3 - 20);
+  }
+  
+  // Step 6a: Add the updateLocation() function
+  updateLocation(newX, newY){
+    this.x = newX;
+    this.y = newY;
+  }
+
+  //Bonus 1 & 2
+  speak(){
+    var catchphrases = ['What’s the matter? I am a witch!', 'I am wicked in many ways.', 'Are you a good witch, or a bad witch?', 'There is no magic when one no longer believes.', "Don't make me drop a house on you."];
+    fill(255, 255, 255);
+    rect(this.x + 50, this.y - 50, 105, 65, 20);
+
+    textSize(10);
+    fill(0, 0, 0);
+    if(mouseIsPressed){
+      text(catchphrases[randomNum], this.x + 55, this.y - 40, 100, 65);
+    }
+    
+  }
+}
