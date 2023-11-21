@@ -1,0 +1,169 @@
+var grid;
+
+/*
+This program simulates life governed by rules. 
+These rules are mainly mentioned in the liveOrDie function
+*/
+
+function setup () {
+  createCanvas(400, 400);
+  grid = new Grid(10);
+  grid.randomize();
+}
+
+function draw () {
+  background(250);
+  //Step 11: Population updates itself automatically 
+  grid.updateNeighborCounts();
+  grid.updatePopulation();
+  grid.draw();
+}
+
+function mousePressed(){
+}
+
+class Grid {
+  constructor (cellSize) {
+    //Step 1: update the contructor to take cellSize as a parameter
+    this.cellSize = cellSize;
+    
+    // use cellSize to calculate and assign values for numberOfColumns and numberOfRows
+    this.numberOfColumns = height/this.cellSize;
+    this.numberOfRows = width/this.cellSize;
+
+    //Step 2: Keeping track of the contents of each cell in the grid
+    this.cells = new Array(this.numberOfColumns);
+
+    for(var i = 0; i < this.numberOfColumns; i++){
+      this.cells[i] = new Array(this.numberOfRows);
+    }
+
+    //Step 3: Fill up empty 2D array with cell values!
+    for (var column = 0; column < this.numberOfColumns; column ++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        this.cells[column][row] = new Cell(column, row, cellSize);
+      }
+    }
+    print(this.cells);
+  }
+
+  //Step 4: Calling draw function from cell class so individual cells can be drawn
+  draw () {
+    for (var column = 0; column < this.numberOfColumns; column++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        this.cells[column][row].draw();
+      }
+    }
+  }
+
+  //Step 5: Create a randomize function that chooses which sells will be alive and which will not be!
+  randomize() {
+    for (var column = 0; column < this.numberOfColumns; column++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        this.cells[column][row].setIsAlive(floor(random(2)));
+        //Sean helped me with this part! 
+      }
+    }
+  }
+
+  //Step 6: Create an updatePopulation function that calls the liveOrDie function for all the cells!
+  updatePopulation() {
+    for (var column = 0; column < this.numberOfColumns; column++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        this.cells[column][row].liveOrDie();
+      }
+    }
+  }
+
+  //Step 7: Counts neighbors around each cell
+  getNeighbors(currentCell) {
+    var neighbors = [];
+    for (var xOffset = -1; xOffset <= 1; xOffset++) {
+      for (var yOffset = -1; yOffset <= 1; yOffset++) {
+        var neighborColumn = currentCell.column + xOffset;
+        var neighborRow = currentCell.row + yOffset;
+        //Step 9: Checks if neighbor position is inside the grid and that neighbor cell is not the current cell
+        
+        if (this.isValidPosition(neighborColumn, neighborRow) && currentCell != this.cells[neighborColumn][neighborRow]){
+          append(neighbors, this.cells[neighborColumn][neighborRow]);
+        }
+        //Sruthy Sabesan, Samiksha Lingan, and Christian Dotimas helped me with Step 7 & 9! 
+     }
+    }
+    return neighbors; 
+  }
+
+  //Step 8: Ensures that my code doesn't try to access any non-existant neighbors outside the bounds of the grid
+  isValidPosition(column, row){
+    if(column < this.numberOfColumns && column >= 0 && row < this.numberOfRows && row >= 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  //Step 10: Loops over all of the cells, count how many of it's neighbors are alive and then update liveNeighborCount for each one
+  updateNeighborCounts(){
+    for (var column = 0; column < this.numberOfColumns; column++) {
+      for (var row = 0; row < this.numberOfRows; row++) {
+        //resets neighbor count to 0
+        this.cells[column][row].liveNeighborCount = 0;
+  
+        //get the cell's neighbors
+        this.getNeighbors(this.cells[column][row]);
+        for(var x = 0; x < this.getNeighbors(this.cells[column][row]).length; x++){
+          if(this.getNeighbors(this.cells[column][row])[x].isAlive){
+            this.cells[column][row].liveNeighborCount += 1;
+          }
+        }
+        //Samiksha Lingan helped me with Step 10!
+      }
+    }
+  }
+
+}
+
+//Step 3: Creating a cell class with properties for every cell
+class Cell {
+  constructor(column, row, size) {
+    this.column = column;
+    this.row = row;
+    this.size = size;
+    this.isAlive = false;
+    this.liveNeighborCount = 0;
+  }
+
+  //Step 4: Changing color of cells based on their life status(dead or alive)
+  draw () {
+    if(this.isAlive){
+      fill(66, 161, 245);
+    }else{
+      fill(224);
+    }
+    noStroke();
+    rect(this.column * this.size + 1, this.row * this.size + 1, this.size - 1, this.size - 1);
+  }
+
+  //Step 5: Create setIsAlive function that determines life status of cell.
+  setIsAlive (value) {
+    if(value == true){
+      this.isAlive = true;
+    }else{
+      this.isAlive = false;
+    }
+  }
+
+  //Step 6: Create liveOrDie function that determines which cells get to live or die based on their amount of live neighbors
+  liveOrDie() {
+    if(this.isAlive && this.liveNeighborCount < 2 || this.isAlive && this.liveNeighborCount > 3){
+      this.isAlive = false;
+    }
+    if(this.isAlive && this.liveNeighborCount == 2 || this.isAlive && this.liveNeighborCount == 3){
+      this.isAlive = true;
+    }
+    if(this.isAlive == false && this.liveNeighborCount == 3){
+      this.isAlive = true;
+    }
+    //Samiksha Lingan & Christian Dotimas helped me!
+  }
+}
