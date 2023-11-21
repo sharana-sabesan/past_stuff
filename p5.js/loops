@@ -1,0 +1,57 @@
+var marcher;
+var backgroundColor;
+var marcherColor;
+var cloneY;
+var colorF;
+
+/*
+In this program, a line of circles, called the "marchers"
+march back and forth across the canvas. The background is
+a grid of squares that make a orange-pink gradient!
+*/
+function setup () {
+  createCanvas(400, 400);
+  
+  marcher = {
+    x: 25,
+    y: 25,
+    size: 30,
+    speed: 1,
+  }
+  
+  backgroundColor = color("lightgrey");
+  marcherColor = color("purple");
+}
+
+function draw () {
+  background(backgroundColor);
+  stroke('black');
+
+  //#4 Make tile background //Bonus Challenge
+  
+  for(var x = 0; x <= width; x += 50){
+    for(var y = 0; y <= height; y += 50){
+      fill(450, y, x);
+      square(x, y, 50);
+    }
+  }
+  
+  // #2 Make the marcher march back and forth
+  marcher.x += marcher.speed;
+  if(marcher.x + 15 >= width|| marcher.x - 15 <= 0){
+    marcher.speed = -marcher.speed;
+  }
+
+  stroke(75);
+  fill(marcherColor);
+  ellipse(marcher.x, marcher.y, marcher.size, marcher.size);
+  
+  // #3 Use a while loop to draw clones of marcher
+  cloneY = marcher.y;
+  while(cloneY < height - 45){
+    cloneY = cloneY + 50;
+    strokeWeight(1.0);
+    fill(color('white'));
+    circle(marcher.x, cloneY, 30);
+  }
+}
