@@ -1,0 +1,152 @@
+
+var canvasWidth; // updated by resetCanvasSize()
+var canvasHeight; // updated by resetCanvasSize()
+var borderSize = 25; // keep canvas text away from screen edges
+var backgroundColor;
+var textColor;
+var inputBGColor;
+var inputTextColor; // #2C
+var jokeInfo; // #3A
+var jokeURL; // #4A
+var slider; //Bonus 1
+var setup; //Bonus 2
+
+/*
+COMMENT:
+In this program, we generate save jokes and generate new jokes. The user is also given the opportunity to choose the color of the background and text by either inputting a color name or hex code! 
+*/
+
+function setup () {
+  // helpers auto fit canvas to the window size
+  resetCanvasSize();
+  createCanvas(canvasWidth, canvasHeight);
+
+  // #2A Call the helper function to create inputs
+  createColorInputs();
+  
+  // #3C Call the helper function to create buttons
+  createButtons()
+
+  // #3A Add starting values to jokeInfo for properties "category" and "joke"
+  jokeInfo = {
+    category : "Pun",
+    joke : "Oysters hate to give away their pearls because they are shellfish.",
+    type: "single"
+  }
+
+  getNewJoke();
+  // #4A Assign a valid URL to jokeURL
+  jokeURL = 'https://v2.jokeapi.dev/joke/Any?type=single';
+  //IF YOU WOULD LIKE TO TEST OUT TWOPART JOKES UNCOMMENT THE FOLLOWING COMMENT:
+  /*
+  jokeURL = 'https://v2.jokeapi.dev/joke/Any?type=twopart';
+  */
+
+  //BONUS 1:
+  slider = createSlider(0, 255, 46);
+  print(slider.position().y);
+}
+
+function draw() {
+  assignColors();
+  background(backgroundColor);
+  displayTitle();
+  displayJoke();
+}
+
+function assignColors() {
+  // #2B Update to assign backgroundColor from the user input
+  backgroundColor = inputBGColor.value();
+  if(backgroundColor == null || backgroundColor == '' || backgroundColor == 0){
+    backgroundColor = color(slider.value(), 65, 217);
+  }
+  
+
+  // #2C Update to assign textColor from the user input  
+  textColor = inputTextColor.value();
+  if(textColor == null || textColor == '' || textColor == 0){
+    textColor = color(112, 128, 255);
+  }
+  
+}
+
+function displayTitle() {
+  // #1 Modify displayTitle to use your name
+  textAlign(CENTER,TOP);
+  textSize(40);
+  text("Sharana's Joke Generator", borderSize, borderSize,width-borderSize,height-borderSize);
+}
+
+function displayJoke() {
+  // #3B Update the function to use the values from jokeInfo
+  fill(textColor);
+
+  // display joke
+  textAlign(CENTER,CENTER);
+  textSize(30);
+  //BONUS 2
+  if(jokeInfo.type == "twopart"){
+    rectMode(RADIUS);
+    setup = text(jokeInfo.setup, borderSize, borderSize,width-borderSize,height-borderSize);
+    text(jokeInfo.delivery, borderSize, borderSize + 70,width-borderSize,height-borderSize);
+  }else{
+    text(jokeInfo.joke, borderSize, borderSize,width-borderSize,height-borderSize);
+  }
+
+  // display category
+  textAlign(CENTER,BOTTOM);
+  textSize(25);
+  text("Category: " + jokeInfo.category, borderSize, borderSize,width-borderSize,height-(borderSize*2));
+}
+
+function createColorInputs() {
+  // text and input element for background color
+  createElement("text","BG Color: ") // create text label
+  inputBGColor = createInput(''); // create it with no starting value
+  inputBGColor.size(100); // how wide the input box is
+  inputBGColor.attribute('placeholder', '#hex or name'); // placeholders can explain what format to use
+
+  // #2C Add a text and input element for TEXT color
+  createElement("text", "Text Color: ");
+  inputTextColor = createInput('');
+  inputTextColor.size(100);
+  inputTextColor.attribute('placeholder', '#hex or name');
+}
+
+function createButtons() {
+  // Button to save the current joke as an image
+  var saveButton = createButton("Save Joke");
+  saveButton.mousePressed(saveJoke);
+  
+  // #4C Create a "New Joke" button to call the getNewJoke function
+  var newJokeButton = createButton("New Joke");
+  newJokeButton.mousePressed(getNewJoke);
+}
+
+function getNewJoke() {
+  // Use https://v2.jokeapi.dev/#try-it to generate the URL to use here
+  let url = jokeURL + '&safe-mode'; // Add '&safe-mode' flag to only get school-appropriate jokes
+  httpGet(url, 'json', function(response) {
+    // NOTE: when HTTP request completes it will run the code in this block
+    // #4B Assign response to jokeInfo and add a print statement
+    jokeInfo = response;
+    print(response);
+  });
+}
+
+function saveJoke() {
+  // NOTE: works when website open in other tab, not in replit editor
+  // #3C Use the save function to save a JPG of the canvas
+  save('myCanvas.jpg');
+}
+
+// WINDOW RESIZE HELPERS
+function windowResized() {
+  resetCanvasSize();
+  resizeCanvas(canvasWidth, canvasHeight);
+}
+
+function resetCanvasSize() {
+  canvasWidth = windowWidth-20;
+  canvasHeight = windowHeight + 250;
+}
