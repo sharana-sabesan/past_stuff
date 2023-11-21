@@ -1,0 +1,75 @@
+var skyColor;
+var cloud;
+var rightCreature;
+var leftCreature;
+
+/*
+In my code, I am creating two creatures at the end my clouds and making them dance! I also change the background color whenever I click the screen. The creatures also dance when I click the screen. 
+*/
+
+function setup () {
+  createCanvas(400, 400);
+  
+  skyColor = color(100, 200, 255);
+  cloud = {
+    color: color(255, 255, 255, 250),
+    height: 100,
+    yOffset: 50,
+  }
+
+  // #2a Create rightCreature object with properties
+  rightCreature = {
+    color1 : color(235, 222, 82),
+    color2 : color(235, 105, 82),
+    height :  80,
+    width : 50,
+    xOffset : 55
+  }
+
+  // #2b Create leftCreature object with properties
+  leftCreature = {
+    color1 : color(179, 235, 82),
+    color2 : color(184, 82, 235),
+    height : 60,
+    width : 50,
+    xOffset : -120
+  }
+  // Bonus 1
+  print("'Value == 5' is used as a condition. It is basically asking us: is the variable 'value' equal to 5? 'Value = 5' is TELLING us that the variable 'value' equals 5. The variable 'value' is initialized.");
+}
+
+function draw () {
+  background(skyColor);
+  helperDrawCloud();
+
+  // #3a Draw rightCreature on the right side of the cloud
+  fill(rightCreature.color1);
+  rect(mouseX + rightCreature.xOffset, mouseY - 30, rightCreature.width,rightCreature.height, 20);
+  fill(rightCreature.color2);
+  arc(mouseX + rightCreature.xOffset + 25, mouseY - 30, rightCreature.height, rightCreature.height, 0, PI + QUARTER_PI, PIE);
+  fill(224, 119, 179);
+  circle(mouseX + rightCreature.xOffset + 25, mouseY - 30,rightCreature.width);
+
+  // #3b Draw leftCreature on the left side of the cloud
+  fill(leftCreature.color1);
+  square(mouseX + leftCreature.xOffset, mouseY - 15, leftCreature.height);
+  fill(leftCreature.color2);
+  circle(mouseX + leftCreature.xOffset, mouseY - 15, leftCreature.height - 20);
+  fill(0, 94, 255);
+  circle(mouseX + leftCreature.xOffset + 60, mouseY - 15, leftCreature.height);
+}
+
+// #4a Add mousePressed()
+function mousePressed(){
+  print("clicked");
+  var randomRed = random(0, 255);
+
+  // #4b Use randomRed and setRed() to change skyColor
+  skyColor.setRed(randomRed);
+  background(skyColor);
+
+  // Bonus 2
+  rightCreature.xOffset = random(50, 70);
+  leftCreature.xOffset = random(-80, -100);
+}
+
