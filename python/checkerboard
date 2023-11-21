@@ -1,0 +1,44 @@
+speed(0)
+color_value = 0
+y_value = -200
+color_row = 0
+starting_color = "red"
+
+
+def draw_square_row(color_value):
+    for i in range(10):
+        if(color_value == 0):
+            color("red")
+            color_value=color_value+1
+        else:
+            color("black")
+            color_value=color_value-1
+        begin_fill()
+        draw_pattern()
+        end_fill()
+        penup()
+        forward(40)
+        
+def draw_pattern():
+    for i in range(4):
+        pendown()
+        forward(40)
+        left(90)
+        
+def move_up_row():
+    left(90)
+    forward(40)
+    right(90)
+    backward(400)
+
+penup()
+setposition(-200, -200)
+
+for i in range(10):
+    pendown()
+    draw_square_row(color_value)
+    if(color_value == 0):
+        color_value=color_value+1
+    else:
+        color_value=color_value-1
+    move_up_row()
