@@ -1,0 +1,76 @@
+function setup () {
+  createCanvas(400, 400);
+}
+
+function draw () {
+  helperBackground(); // do not change or move this line
+
+  // Step 2a: Draw Creature 1
+  /* For my first creature, I created an
+   * ant with the face of mickey. I also 
+   * made the ant body colorful. For creature
+   * 1 I used: circles, and squares.
+   */
+  
+  circle(100, 120, 85);
+  circle(60, 68, 50);
+  circle(135, 68, 50);
+  fill(color('white'));    
+  circle(100,120,70);
+
+  var feetColor = color(61, 25, 17)
+  fill(feetColor);
+  strokeWeight(0.1);
+  square(135, 266, 40);
+  square(30, 266, 40);
+  
+  square(45, 196, 40);
+  square(120, 196, 40);
+
+  square(32, 336, 40);
+  square(135, 336, 40);
+
+  var c = color(235, 134, 52);
+  strokeWeight(3.0);
+  fill(c);
+  circle(103, 196, 70);
+
+  var c = color(52, 159, 235);
+  strokeWeight(3.0);
+  fill(c);
+  circle(103, 336, 100);
+
+  var c = color(52, 235, 67);
+  strokeWeight(3.0);
+  fill(c);
+  circle(103, 266, 90);
+  
+
+  // Step 2b: Draw Creature 2
+  /* For my second creature, I tried to imitate
+   * a starwars spaceship. I used triangles, 
+   * ellipes and arcs, as well as more "pastel"
+   * colors for my creation!
+   */ 
+  
+  var c = color(153, 0, 255);
+  fill(c);
+  strokeWeight(4.0);
+  arc(300, 90, 80, 80, 0, PI + QUARTER_PI, PIE);
+
+  var c = color(255, 227, 69)
+  fill(c);
+  triangle(300, 133, 250, 250, 350, 250);
+
+  var c = color(255, 84, 110);
+  fill(c);
+  triangle(300, 367, 250, 250, 350, 250);
+
+  var c = color(40, 66, 128);
+  fill(c);
+  ellipse(230, 250, 35, 220);
+  
+  ellipse(370, 250, 35, 220);
+  
+}
++
