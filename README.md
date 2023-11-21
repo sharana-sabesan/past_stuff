@@ -1,2 +1,2 @@
 # past_stuff
-past programs i have written
+past programs I have written, and more visual projects in p5.js
