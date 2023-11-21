@@ -1,0 +1,79 @@
+var spots;
+
+/* 
+In this program,the background of the canvas changes according to the mouse position. When the user clicks the screen, a spot/circle is formed, and this spot has the color of the canvas when the mouse was clicked. Also, in the top left corner, the color of the LAST spot is shown. Finally, everytime 10 spots is drawn, 5 disappear which is the bonus challenge I did!
+*/
+
+function setup () {
+  createCanvas(400, 400);
+  spots = [];
+}
+
+function draw () {
+  background(currentColor());
+
+  drawSpots();
+  drawLastColor();
+
+  //BONUS
+  if(spots.length == 10){
+    spots.splice(0,spots.length - 5);
+  }
+}
+
+function mousePressed() {
+  saveSpot();
+  print(spots);
+}
+
+function saveSpot() {
+  // #2 Add a new Spot from the mouse location and current color to the spots array
+  var spot = new Spot(mouseX, mouseY, currentColor());
+  spots.push(spot);
+}
+
+function drawSpots() {
+  // #3 Loop over spots and call show() on each Spot in the array
+  for(var i = 0; i < spots.length; i++){
+    spots[i].show();
+  }
+}
+
+function lastColor() {
+  // #4 Return the color of the most recently added Spot in the spots array
+  if(spots.length == 0){
+    return color(255);
+  }else{
+    return spots[spots.length - 1].color;
+  }
+}
+
+function drawLastColor() {
+  noStroke();
+  fill(255);
+  rect(10, 10, 40, 40);
+  textSize(25);
+  text("last", 10, 75);
+  
+  fill(lastColor());
+  rect(11, 11, 38, 38);
+}
+
+function currentColor() {
+  return color(0, mouseX, mouseY);
+}
+
+class Spot {
+  constructor(x, y, color) {
+    this.x = x;
+    this.y = y;
+    this.color = color;
+    this.size = 25;
+  }
+
+  show() {
+    stroke(0);
+    fill(this.color);
+    ellipse(this.x, this.y, this.size, this.size);
+  }
+}
