@@ -1,0 +1,24 @@
+
+first = input("First Name: ")
+last = input("Last Name: ")
+x = (first,last)
+first, last = last, first
+y = (first+ ", " + last)
+full = " ".join(x)
+citation = "".join(y)
+print "Full name: " + str(full)
+print "Citation: " + str(citation)
+
+"""
+Below is the best and efficient code, but because CodeHS has some bugs, 
+its not working, or maybe I did something wrong, but I highly doubt it
+
+First_name = input("First name: ")
+Last_name = input("Last name: ")
+
+
+print("Full name: " + First_name + ", " + Last_name)
+
+First_name, Last_name = Last_name, First_name
+print("Citation: " + First_name + ", " + Last_name)
+"""
