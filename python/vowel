@@ -1,0 +1,13 @@
+user_string = input("Enter a string of lowercase letters: ")
+vowels = "aeiou"
+z = 0
+for char in user_string:
+    for letter in vowels:
+        if letter == char:
+            z = z + 1
+        
+        
+if z > 0:
+    print "Contains a lowercase vowel!"
+else:
+    print "Doesn't contain a lowercase vowel!"
