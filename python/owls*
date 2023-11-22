@@ -1,0 +1,34 @@
+"""
+This program finds the number of times the user says owl in their input
+"""
+
+def find_owls(x):
+    x = x.lower()
+    x = x.split()
+    indices_list = []
+    count = 0
+    for index, value in enumerate(x):
+        if value == "owl" or "owl" in value:
+            count = count + 1
+            indices_list.append(index)
+    print "There were " + str(count) + " words that contained \"owl\"."
+    print "They occurred at the indices: " + str(indices_list)
+
+user_input = input("Enter some text: ")  
+find_owls(user_input)
+
+
+def findEvenNum():
+    x = [1, 2, 3, 4]
+    count = 0
+    while count < 3:
+        if(x[count] % 2 != 0):
+            x.remove(x[count])
+        else: 
+            print(x[count])
+        count += 1
+    
+            
+            
+
+findEvenNum()
