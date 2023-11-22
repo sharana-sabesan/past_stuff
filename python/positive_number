@@ -1,0 +1,27 @@
+"""
+This program repeatedly asks the user for a positive number, if 
+they have entered a zero or negative or String as their input!
+"""
+# Deafualt value of user_num
+user_num = -1
+
+# Function that repeatedly asks for positve, and only stops when
+# positive input is given
+def retrieve_positive_number(x):
+    while True:
+        print "Enter a positive number!"
+        user_num = int(input("Enter a number: "))
+        if user_num > 0:
+            return user_num
+# Here if user_num is a negative or zero, the retrieve positive function
+# is called! If not the code moves on as usual
+try:
+    user_num = int(input("Enter a number: "))
+    if user_num <= 0:
+        print "Number: " + str(retrieve_positive_number(user_num))
+    else:
+        print "Number: " + str(user_num)
+
+# Here if the user_num is a String, retrieve positve function is called!
+except ValueError:
+    retrieve_positive_number(user_num)
