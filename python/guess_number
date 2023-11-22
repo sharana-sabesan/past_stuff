@@ -1,0 +1,13 @@
+my_float = 3.3312
+rounded_float = round(my_float, 2)
+
+while True:
+    user_guess = float(input("Enter a guess: "))
+    #rounded_num = round(user_guess, 2)
+    if user_guess > rounded_float:
+        print "Too high!"
+    elif user_guess < rounded_float:
+        print "Too low!"
+    else: 
+        print "Correct!"
+        break
