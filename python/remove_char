@@ -1,0 +1,19 @@
+"""
+This program uses a function called remove_all_from_string that 
+takes two strings, and returns a copy of the first string with 
+all instances of the second string removed. This time, the second 
+string may be any length, including 0.
+"""
+def remove_all_from_string(x, y):
+    x = x.lower()
+    index = x.find(y)
+    index2 = len(y) + index
+    while True:
+        if y in x:
+            index = x.find(y)
+            x = x[:index] + x[index + index2:]
+        elif y not in x:
+            break
+    return x
+    
+print remove_all_from_string("bananas", "na")
